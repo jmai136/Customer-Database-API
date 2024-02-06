@@ -15,10 +15,21 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
         [ForeignKey("CallNotesID")]
         public CallNotes CallNotes { get; set; }
 
-        // 1 - many
-        public int CallDurationID { get; set; }
-        [Required, ForeignKey("CallDurationId")]
-        public CallDuration CallDuration { get; set; }
+        [Required]
+        public DateTime CallDurationStartDateTime { get; set; }
+
+        [Required]
+        public DateTime CallDurationEndDateTime
+        {
+            get
+            {
+                return CallDurationEndDateTime;
+            }
+            set
+            {
+                CallDurationEndDateTime = (value < CallDurationStartDateTime) ? CallDurationStartDateTime : value;
+            }
+        }
 
         public int CustomerID { get; set; }
         [Required, ForeignKey("CustomerId")]
