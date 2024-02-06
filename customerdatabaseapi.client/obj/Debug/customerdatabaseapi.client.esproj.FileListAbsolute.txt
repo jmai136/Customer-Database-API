@@ -1,0 +1,1 @@
+A:\Microsoft Visual Studio\IT 310\CustomerDatabaseAPI\customerdatabaseapi.client\obj\Debug\customerdatabaseapi.client.esproj.CoreCompileInputs.cache
