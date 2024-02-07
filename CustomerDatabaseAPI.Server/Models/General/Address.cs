@@ -1,8 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CustomerDatabaseAPI.Server.Models.Actors.CALL;
+using CustomerDatabaseAPI.Server.Models.Actors.COMPANY;
+using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    [Table("Address")]
     public class Address
     {
         private enum EAddressType
@@ -71,7 +75,7 @@ namespace CustomerDatabaseAPI.Server.Models.General
         {
         }
 
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AddressID { get; set; }
 
         [Required, MaxLength(100)]
@@ -91,5 +95,16 @@ namespace CustomerDatabaseAPI.Server.Models.General
 
         [Required, EnumDataType(typeof(EZipcodes))]
         public object Zipcode;
+
+
+
+
+        // 1 - MANY
+
+        [Required]
+        public List<PersonInfo> PersonInfos { get; set; }
+
+        [Required]
+        public List<CompanyInfo> CompanyInfos { get; set; }
     }
 }

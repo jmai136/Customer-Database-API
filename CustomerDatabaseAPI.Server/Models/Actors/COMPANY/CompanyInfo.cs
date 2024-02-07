@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
+    [Table("CompanyInfo")]
     public class CompanyInfo
     {
         public int CompanyInfoID { get; set; }
@@ -16,7 +17,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         public Address Address { get; set; }
 
         public int PhoneNumberID { get; set; }
-        [ForeignKey("PhoneNumberId")]
+        [ForeignKey("PhoneNumberID")]
         public PhoneNumber PhoneNumber { get; set; }
 
         public int EmailID { get; set; }

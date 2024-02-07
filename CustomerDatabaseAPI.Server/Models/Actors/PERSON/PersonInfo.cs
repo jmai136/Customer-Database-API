@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 {
+    [Table("PersonInfo")]
     public class PersonInfo
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonInfoID { get; set; }
 
         public int PersonID { get; set; }
@@ -18,7 +19,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
         public Address Address { get; set; }
 
         public int PhoneNumberID { get; set; }
-        [Required, ForeignKey("PhoneNumberId")]
+        [Required, ForeignKey("PhoneNumberID")]
         public PhoneNumber PhoneNumber { get; set; }
 
         public int EmailID { get; set; }

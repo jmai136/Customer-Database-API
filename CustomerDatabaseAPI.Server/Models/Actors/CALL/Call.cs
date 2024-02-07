@@ -4,9 +4,10 @@ using CustomerDatabaseAPI.Server.Models.Actors.Recipients;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
 {
+    [Table("Call")]
     public class Call
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CallID { get; set; }
 
         // 1 - many
