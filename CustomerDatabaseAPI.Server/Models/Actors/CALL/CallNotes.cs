@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
@@ -29,5 +30,8 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
 
         [Required]
         public byte IsResolved { get; set; }
+
+        [Required]
+        IList<Call> Calls { get; set; }
     }
 }
