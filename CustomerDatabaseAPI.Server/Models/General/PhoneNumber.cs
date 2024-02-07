@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CustomerDatabaseAPI.Server.Models.Actors.COMPANY;
+using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
+using System.ComponentModel.DataAnnotations;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
@@ -19,5 +21,15 @@ namespace CustomerDatabaseAPI.Server.Models.General
 
         [Required, EnumDataType(typeof(EPhoneNumberType))]
         public object PhoneNumberType;
+
+
+
+        // 1 - MANY
+
+        [Required]
+        IList<PersonInfo> PersonInfos { get; set; }
+
+        [Required]
+        IList<CompanyInfo> CompanyInfos { get; set; }
     }
 }

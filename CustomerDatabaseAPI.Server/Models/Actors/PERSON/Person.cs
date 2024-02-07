@@ -18,5 +18,11 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 
         [Required]
         public DateOnly BirthDate { get; set; }
+
+
+        // 1 - MANY
+
+        [Required]
+        IList<PersonInfo> PersonInfos { get; set; }
     }
 }
