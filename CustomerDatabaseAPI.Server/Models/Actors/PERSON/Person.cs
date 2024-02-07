@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 {
+    [Table("Person")]
     public class Person
     {
         [Key]
@@ -18,5 +20,11 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 
         [Required]
         public DateOnly BirthDate { get; set; }
+
+
+        // 1 - MANY
+
+        [Required]
+        public IList<PersonInfo> PersonInfos { get; set; }
     }
 }

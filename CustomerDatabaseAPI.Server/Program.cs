@@ -1,3 +1,8 @@
+using Azure.Identity;
+using CustomerDatabaseAPI.Server.Data;
+using CustomerDatabaseAPI.Server.Utilities;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

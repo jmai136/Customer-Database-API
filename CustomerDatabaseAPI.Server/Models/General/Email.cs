@@ -1,7 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CustomerDatabaseAPI.Server.Models.Actors.COMPANY;
+using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    [Table("Email")]
     public class Email
     {
         private enum EEmailAccountType
@@ -19,5 +23,14 @@ namespace CustomerDatabaseAPI.Server.Models.General
 
         [Required, EnumDataType(typeof(Email.EEmailAccountType))]
         public object EmailAccountType;
+
+
+        // 1 - MANY
+
+        [Required]
+        public IList<PersonInfo> PersonInfos { get; set; }
+
+        [Required]
+        public IList<CompanyInfo> CompanyInfos { get; set; }
     }
 }

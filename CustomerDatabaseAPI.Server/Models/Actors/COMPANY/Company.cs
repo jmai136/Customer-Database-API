@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
+using CustomerDatabaseAPI.Server.Models.Actors.Recipients;
 using CustomerDatabaseAPI.Server.Models.General;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
+    [Table("Company")]
     public class Company
     {
         private enum ECompanyIndustry
@@ -33,5 +36,14 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         [Required]
         [EnumDataType(typeof(ECompanyIndustry))]
         public object CompanyIndustry;
+
+
+        // 1 - MANY
+
+        [Required]
+        public IList<CustomerSupportRepresentative> CustomerSupportRepresentatives { get; set; }
+
+        [Required]
+        public IList<CompanyInfo> CompanyInfos { get; set; }
     }
 }
