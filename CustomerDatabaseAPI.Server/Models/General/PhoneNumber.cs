@@ -1,9 +1,11 @@
 ﻿using CustomerDatabaseAPI.Server.Models.Actors.COMPANY;
 using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    [Table("PhoneNumber")]
     public class PhoneNumber
     {
         private enum EPhoneNumberType

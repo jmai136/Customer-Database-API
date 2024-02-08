@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 {
+    [Table("PersonInfo")]
     public class PersonInfo
     {
         [Key]

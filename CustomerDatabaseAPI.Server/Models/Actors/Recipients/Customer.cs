@@ -5,6 +5,7 @@ using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
 {
+    [Table("Customer")]
     public class Customer
     {
         [Key]

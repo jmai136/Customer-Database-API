@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    [Table("Address")]
     public class Address
     {
         private enum EAddressType
