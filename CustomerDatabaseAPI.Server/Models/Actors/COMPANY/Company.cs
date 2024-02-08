@@ -6,6 +6,7 @@ using CustomerDatabaseAPI.Server.Models.General;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
+    [Table("Company")]
     public class Company
     {
         private enum ECompanyIndustry

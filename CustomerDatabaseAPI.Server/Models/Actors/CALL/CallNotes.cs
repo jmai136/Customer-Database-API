@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
 {
+    [Table("CallNotes")]
     public class CallNotes
     {
         private enum ECallReasonType

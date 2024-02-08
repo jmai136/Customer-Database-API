@@ -4,6 +4,7 @@ using CustomerDatabaseAPI.Server.Models.Actors.Recipients;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
 {
+    [Table("Call")]
     public class Call
     {
         [Key]

@@ -6,6 +6,7 @@ using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
 {
+    [Table("CSR")]
     public class CustomerSupportRepresentative
     {
         [Key]

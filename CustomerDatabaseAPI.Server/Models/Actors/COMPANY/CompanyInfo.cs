@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
+    [Table("CompanyInfo")]
     public class CompanyInfo
     {
         public int CompanyInfoID { get; set; }
