@@ -6,25 +6,25 @@ using CustomerDatabaseAPI.Server.Models.General;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
+    public enum ECompanyIndustry
+    {
+        MANUFACTURING,
+        TECHNOLOGY,
+        FINANCIAL,
+        RETAIL,
+        HEALTHCARE,
+        TELECOMMUNICATIONS,
+        ENERGY,
+        CONSTRUCTION,
+        TRANSPORTATION,
+        HOSPITALITY,
+        FOOD,
+        ENTERTAINMENT
+    }
+
     [Table("Company")]
     public class Company
     {
-        private enum ECompanyIndustry
-        {
-            MANUFACTURING,
-            TECHNOLOGY,
-            FINANCIAL,
-            RETAIL,
-            HEALTHCARE,
-            TELECOMMUNICATIONS,
-            ENERGY,
-            CONSTRUCTION,
-            TRANSPORTATION,
-            HOSPITALITY,
-            FOOD,
-            ENTERTAINMENT
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CompanyID { get; set; }
 
@@ -35,7 +35,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 
         [Required]
         [EnumDataType(typeof(ECompanyIndustry))]
-        public object CompanyIndustry;
+        public ECompanyIndustry CompanyIndustry;
 
 
         // 1 - MANY

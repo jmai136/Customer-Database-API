@@ -5,24 +5,24 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    public enum EEmailAccountType
+    {
+        HOME,
+        BUSINESS,
+        ACADEMIC
+    }
+
     [Table("Email")]
     public class Email
     {
-        private enum EEmailAccountType
-        {
-            HOME,
-            BUSINESS,
-            ACADEMIC
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EmailID { get; set; }
 
         [Required, MaxLength(320)]
         public string EmailCharacters { get; set; }
 
-        [Required, EnumDataType(typeof(Email.EEmailAccountType))]
-        public object EmailAccountType;
+        [Required, EnumDataType(typeof(EEmailAccountType))]
+        public EEmailAccountType EmailAccountType;
 
 
         // 1 - MANY

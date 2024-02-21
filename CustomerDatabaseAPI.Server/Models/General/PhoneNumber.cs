@@ -5,16 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
+    public enum EPhoneNumberType
+    {
+        HOME,
+        WORK,
+        MOBILE
+    }
+
     [Table("PhoneNumber")]
     public class PhoneNumber
     {
-        private enum EPhoneNumberType
-        {
-            HOME,
-            WORK,
-            MOBILE
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PhoneNumberID { get; set; }
 
@@ -22,7 +22,7 @@ namespace CustomerDatabaseAPI.Server.Models.General
         public string PhoneNumberDigits { get; set; }
 
         [Required, EnumDataType(typeof(EPhoneNumberType))]
-        public object PhoneNumberType;
+        public EPhoneNumberType PhoneNumberType;
 
 
 
