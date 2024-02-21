@@ -6,19 +6,17 @@ using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
 {
-    [Table("CSR")]
+    [Table("Csr", Schema = "CustomerDatabase")]
     public class CustomerSupportRepresentative
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerSupportRepresentativeID { get; set; }
 
-        public int PersonID { get; set; }
-        [Required, ForeignKey("PersonId")]
-        public Person Person { get; set; }
+        [ForeignKey("PersonId")]
+        public Person? Person { get; set; }
 
-        public int CompanyID { get; set; }
-        [Required, ForeignKey("CompanyId")]
-        public Company Company { get; set; }
+        [ForeignKey("CompanyId")]
+        public Company? Company { get; set; }
 
 
         // 1 - MANY

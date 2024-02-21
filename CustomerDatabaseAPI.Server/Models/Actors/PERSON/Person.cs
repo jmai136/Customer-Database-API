@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 {
-    [Table("Person")]
+    [Table("Person", Schema = "CustomerDatabase")]
     public class Person
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

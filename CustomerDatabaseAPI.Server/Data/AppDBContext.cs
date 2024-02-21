@@ -4,11 +4,12 @@ using CustomerDatabaseAPI.Server.Models.Actors.COMPANY;
 using CustomerDatabaseAPI.Server.Models.Actors.CALL;
 using CustomerDatabaseAPI.Server.Models.General;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Net;
 
 namespace CustomerDatabaseAPI.Server.Data
 {
-    public class AppDBContext : DbContext
+    public class AppDBContext : IdentityDbContext
     {
         public DbSet<Call> Call { get; set; }
 
@@ -56,6 +57,7 @@ namespace CustomerDatabaseAPI.Server.Data
             modelBuilder.Entity<Person>()
                 .HasMany(person => person.PersonInfos);
 
+            /*
             // Adds seed data, temporary, might just make a DBSeed class in the future
             modelBuilder.Entity<Person>().
                 HasData(
@@ -63,28 +65,14 @@ namespace CustomerDatabaseAPI.Server.Data
                         PersonID = 0,
                         FirstName = "Genji",
                         LastName = "Shimada",
-                        BirthDate = new DateOnly(1997, 10, 25),
-                        PersonInfos = new List<PersonInfo>
-                        {
-                            new PersonInfo
-                            {
-                                PersonInfoID = 0
-                            }
-                        }
+                        BirthDate = new DateOnly(1997, 10, 25)
                     },
                     new Person
                     {
                         PersonID = 1,
                         FirstName = "Hanzo",
                         LastName = "Shimada",
-                        BirthDate = new DateOnly(1990, 3, 14),
-                        PersonInfos = new List<PersonInfo>
-                        {
-                            new PersonInfo
-                            {
-                                PersonInfoID = 1
-                            }
-                        }
+                        BirthDate = new DateOnly(1990, 3, 14)
                     });
 
             modelBuilder.Entity<PersonInfo>().
@@ -92,42 +80,20 @@ namespace CustomerDatabaseAPI.Server.Data
                     new PersonInfo
                     {
                         PersonInfoID = 0,
-                        Person = new Person {
-                            PersonID = 0
-                        },
-                        Address = new Address
-                        {
-                            AddressID = 0
-                        },
-                        PhoneNumber = new PhoneNumber
-                        {
-                            PhoneNumberID = 0
-                        },
-                        Email = new Email
-                        {
-                            EmailID = 0
-                        }
+                        PersonID = 0,
+                        AddressID = 0,
+                        PhoneNumberID = 0,
+                        EmailID = 0
                     },
                     new PersonInfo
                     {
                         PersonInfoID = 1,
-                        Person = new Person
-                        {
-                            PersonID = 1
-                        },
-                        Address = new Address
-                        {
-                            AddressID = 0
-                        },
-                        PhoneNumber = new PhoneNumber
-                        {
-                            PhoneNumberID = 0
-                        },
-                        Email = new Email
-                        {
-                            EmailID = 0
-                        }
+                        PersonID = 1,
+                        AddressID = 0,
+                        PhoneNumberID = 0,
+                        EmailID = 0
                     });
+            */
 
             /**************** ADDRESS *******************/
             modelBuilder.Entity<Address>()
@@ -135,6 +101,7 @@ namespace CustomerDatabaseAPI.Server.Data
             modelBuilder.Entity<Address>()
                 .HasMany(address => address.CompanyInfos);
 
+            /*
             modelBuilder.Entity<Address>().HasData(
                 new Address
                 {
@@ -143,21 +110,7 @@ namespace CustomerDatabaseAPI.Server.Data
                     AddressLineTwo = "",
                     City = "Milwaukee",
                     State = EStatesAbbreviations.WI,
-                    Zipcode = "56032",
-                    PersonInfos = new List<PersonInfo>
-                    {
-                        new PersonInfo
-                        {
-                            PersonInfoID = 0
-                        },
-                        new PersonInfo
-                        {
-                            PersonInfoID = 1
-                        }
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                    },
+                    Zipcode = "56032"
                 },
                 new Address
                 {
@@ -166,23 +119,10 @@ namespace CustomerDatabaseAPI.Server.Data
                     AddressLineTwo = "",
                     City = "Toledo",
                     State = EStatesAbbreviations.CA,
-                    Zipcode = "784023",
-                    PersonInfos = new List<PersonInfo>
-                    {
-                        new PersonInfo
-                        {
-                            PersonInfoID = 1
-                        }
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                        new CompanyInfo
-                        {
-                            CompanyInfoID = 0
-                        }
-                    },
+                    Zipcode = "784023"
                 }
             );
+            */
 
             /**************** PHONE NUMBER *******************/
             modelBuilder.Entity<PhoneNumber>()
@@ -190,133 +130,71 @@ namespace CustomerDatabaseAPI.Server.Data
             modelBuilder.Entity<PhoneNumber>()
                 .HasMany(phoneNumber => phoneNumber.CompanyInfos);
 
+            /*
             modelBuilder.Entity<PhoneNumber>().HasData(
                 new PhoneNumber
                 {
                     PhoneNumberID = 0,
                     PhoneNumberDigits = "1925064920",
-                    PhoneNumberType = EPhoneNumberType.WORK,
-                    PersonInfos = new List<PersonInfo>
-                    {
-                        new PersonInfo
-                        {
-                            PersonInfoID = 0
-                        },
-                        new PersonInfo
-                        {
-                            PersonInfoID = 1
-                        }
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                    }
+                    PhoneNumberType = EPhoneNumberType.WORK
                 },
                 new PhoneNumber
                 {
                     PhoneNumberID = 1,
                     PhoneNumberDigits = "7392018402",
-                    PhoneNumberType = EPhoneNumberType.WORK,
-                    PersonInfos = new List<PersonInfo>
-                    {
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                        new CompanyInfo
-                        {
-                            CompanyInfoID = 0
-                        }
-                    }
+                    PhoneNumberType = EPhoneNumberType.WORK
                 }
             );
+            */
 
             /**************** EMAIL *******************/
             modelBuilder.Entity<Email>()
-                .HasMany(phoneNumber => phoneNumber.PersonInfos);
+                .HasMany(email => email.PersonInfos);
             modelBuilder.Entity<Email>()
-                .HasMany(phoneNumber => phoneNumber.CompanyInfos);
+                .HasMany(email => email.CompanyInfos);
 
+            /*
             modelBuilder.Entity<Email>().HasData(
                 new Email
                 {
                     EmailID = 0,
                     EmailCharacters = "shimadabro@gmail.com",
-                    EmailAccountType = EEmailAccountType.HOME,
-                    PersonInfos = new List<PersonInfo>
-                    {
-                        new PersonInfo
-                        {
-                            PersonInfoID = 0
-                        },
-                        new PersonInfo
-                        {
-                            PersonInfoID = 1
-                        }
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                    }
+                    EmailAccountType = EEmailAccountType.HOME
                 },
                 new Email
                 {
                     EmailID = 1,
                     EmailCharacters = "shimadaclan@gmail.com",
-                    EmailAccountType = EEmailAccountType.HOME,
-                    PersonInfos = new List<PersonInfo>
-                    {
-                    },
-                    CompanyInfos = new List<CompanyInfo>
-                    {
-                        new CompanyInfo
-                        {
-                            CompanyInfoID = 0
-                        }
-                    }
+                    EmailAccountType = EEmailAccountType.HOME
                 }
             );
-
+            */
             /**************** CUSTOMER *******************/
 
             modelBuilder.Entity<Customer>()
                 .HasMany(customer => customer.Calls);
-
+            /*
             modelBuilder.Entity<Customer>().HasData(
                 new Customer
                 {
                     CustomerID = 0,
-                    Person = new Person
-                    {
-                        PersonID = 0
-                    },
-                    Calls = new List<Call>
-                    {
-                        new Call
-                        {
-                            CallID = 0
-                        }
-                    }
+                    PersonID = 0
                 }
-            );
+            );*/
 
             /**************** CSR *******************/
 
             modelBuilder.Entity<CustomerSupportRepresentative>()
                 .HasMany(csr => csr.Calls);
-
+            /*
             modelBuilder.Entity<CustomerSupportRepresentative>().HasData(
                 new CustomerSupportRepresentative
                 { 
                     CustomerSupportRepresentativeID = 0,
                     PersonID = 1,
-                    CompanyID = 0,
-                    Calls = new List<Call>
-                    {
-                        new Call
-                        {
-                            CallID = 0
-                        }
-                     }
+                    CompanyID = 0
                 }
-            );
+            );*/
 
             /**************** COMPANY *******************/
 
@@ -326,20 +204,13 @@ namespace CustomerDatabaseAPI.Server.Data
 
             modelBuilder.Entity<Company>()
                 .HasMany(company => company.CustomerSupportRepresentatives);
-
+            /*
             modelBuilder.Entity<Company>().HasData(
                 new Company
                 {
                     CompanyID = 0,
                     CompanyName = "The Shimada Clan",
-                    CompanyIndustry = ECompanyIndustry.HOSPITALITY,
-                    CustomerSupportRepresentatives = new List<CustomerSupportRepresentative>
-                    {
-                        new CustomerSupportRepresentative
-                        {
-                            CustomerSupportRepresentativeID = 0
-                        }
-                    }
+                    CompanyIndustry = ECompanyIndustry.HOSPITALITY
                 }
             );
 
@@ -355,24 +226,15 @@ namespace CustomerDatabaseAPI.Server.Data
             );
 
             /**************** CALLS *******************/
-            modelBuilder.Entity<Call>().HasData(
+            /*modelBuilder.Entity<Call>().HasData(
                 new Call
                 {
                     CallID = 0,
-                    CallNotes = new CallNotes
-                    {
-                        CallNotesID = 0
-                    },
+                    CallNotesID = 0,
                     CallDurationStartDateTime = new DateTime(2020, 12, 5, 17, 25, 09),
                     CallDurationEndDateTime = new DateTime(2020, 12, 5, 19, 30, 17),
-                    Customer = new Customer
-                    {
-                        CustomerID = 0
-                    },
-                    CustomerSupportRepresentative = new CustomerSupportRepresentative
-                    {
-                        CustomerSupportRepresentativeID = 0
-                    }
+                    CustomerID = 0,
+                    CustomerSupportRepresentativeID = 0
                 }
             );
 
@@ -382,16 +244,9 @@ namespace CustomerDatabaseAPI.Server.Data
                     CallNotesID = 0,
                     CallNotesDescription = "",
                     CallReasonType = ECallReasonType.BILLING_AND_PAYMENT,
-                    IsResolved = 1,
-                    Calls = new List<Call> 
-                    {
-                        new Call
-                        {
-                            CallID = 0
-                        }
-                    }
+                    IsResolved = 1
                 }
-            );
+            );*/
 
             base.OnModelCreating(modelBuilder);
         }

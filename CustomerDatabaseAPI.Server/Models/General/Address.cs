@@ -68,7 +68,7 @@ namespace CustomerDatabaseAPI.Server.Models.General
         WY
     }
 
-    [Table("Address")]
+    [Table("Address", Schema = "CustomerDatabase")]
     public class Address
     { 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

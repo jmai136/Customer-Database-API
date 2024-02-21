@@ -12,7 +12,7 @@ namespace CustomerDatabaseAPI.Server.Models.General
         ACADEMIC
     }
 
-    [Table("Email")]
+    [Table("Email", Schema = "CustomerDatabase")]
     public class Email
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

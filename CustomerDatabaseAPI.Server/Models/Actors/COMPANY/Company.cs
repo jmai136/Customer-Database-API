@@ -22,7 +22,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         ENTERTAINMENT
     }
 
-    [Table("Company")]
+    [Table("Company", Schema = "CustomerDatabase")]
     public class Company
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

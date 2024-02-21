@@ -18,7 +18,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
         LEGAL_MATTERS
     }
 
-    [Table("CallNotes")]
+    [Table("CallNotes", Schema = "CustomerDatabase")]
     public class CallNotes
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
