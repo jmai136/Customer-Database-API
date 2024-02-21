@@ -49,7 +49,6 @@ namespace CustomerDatabaseAPI.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            /*
             // I shouldn't have to configure the entity or key due to already doing that in my model
             modelBuilder.Entity<Person>()
                 .HasMany(person => person.PersonInfos);
@@ -131,6 +130,7 @@ namespace CustomerDatabaseAPI.Server.Data
             modelBuilder.Entity<Company>()
                 .Property(company => company.CompanyIndustry)
                 .HasConversion<int>();
+
             modelBuilder.Entity<Company>()
                 .HasMany(company => company.CustomerSupportRepresentatives);
 
@@ -148,7 +148,7 @@ namespace CustomerDatabaseAPI.Server.Data
                         }
                     }
                 }
-            );*/
+            );
 
             base.OnModelCreating(modelBuilder);
         }
