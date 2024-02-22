@@ -7,8 +7,13 @@ namespace CustomerDatabaseAPI.Server.Models.General
 {
     public enum EEmailAccountType
     {
+        [Display(Name = "Home")]
         HOME,
+
+        [Display(Name = "Business")]
         BUSINESS,
+
+        [Display(Name = "Academic")]
         ACADEMIC
     }
 
@@ -28,9 +33,9 @@ namespace CustomerDatabaseAPI.Server.Models.General
         // 1 - MANY
 
         [Required]
-        public List<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo>? PersonInfos { get; set; }
 
         [Required]
-        public List<CompanyInfo> CompanyInfos { get; set; }
+        public List<CompanyInfo>? CompanyInfos { get; set; }
     }
 }

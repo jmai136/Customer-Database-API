@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerDatabaseAPI.Server.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240221191930_InitialCreate")]
+    [Migration("20240222235843_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -31,8 +31,6 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CallID"));
-
                     b.Property<DateTime>("CallDurationEndDateTime")
                         .HasColumnType("datetime2");
 
@@ -42,7 +40,7 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.Property<int?>("CallNotesID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int?>("CustomerID")
                         .HasColumnType("int");
 
                     b.Property<int?>("CustomerSupportRepresentativeID")
@@ -52,11 +50,20 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     b.HasIndex("CallNotesID");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("CustomerSupportRepresentativeID");
 
                     b.ToTable("Call", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CallID = 1,
+                            CallDurationEndDateTime = new DateTime(2020, 12, 5, 19, 30, 17, 0, DateTimeKind.Unspecified),
+                            CallDurationStartDateTime = new DateTime(2020, 12, 5, 17, 25, 9, 0, DateTimeKind.Unspecified),
+                            CallNotesID = 1,
+                            CustomerID = 1,
+                            CustomerSupportRepresentativeID = 1
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.CALL.CallNotes", b =>
@@ -68,6 +75,9 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CallNotesID"));
 
                     b.Property<string>("CallNotesDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CallReasonType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -77,6 +87,15 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.HasKey("CallNotesID");
 
                     b.ToTable("CallNotes", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CallNotesID = 1,
+                            CallNotesDescription = "",
+                            CallReasonType = "BILLING_AND_PAYMENT",
+                            IsResolved = (byte)1
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.COMPANY.Company", b =>
@@ -102,6 +121,15 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.HasKey("CompanyID");
 
                     b.ToTable("Company", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CompanyID = 1,
+                            CompanyDescription = "",
+                            CompanyIndustry = "HOSPITALITY",
+                            CompanyName = "The Shimada Clan"
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.COMPANY.CompanyInfo", b =>
@@ -109,8 +137,6 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.Property<int>("CompanyInfoID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CompanyInfoID"));
 
                     b.Property<int?>("AddressID")
                         .HasColumnType("int");
@@ -126,15 +152,19 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     b.HasKey("CompanyInfoID");
 
-                    b.HasIndex("AddressID");
-
                     b.HasIndex("CompanyID");
 
-                    b.HasIndex("EmailID");
-
-                    b.HasIndex("PhoneNumberID");
-
                     b.ToTable("CompanyInfo", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CompanyInfoID = 1,
+                            AddressID = 2,
+                            CompanyID = 1,
+                            EmailID = 2,
+                            PhoneNumberID = 2
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", b =>
@@ -159,13 +189,28 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("PersonID");
 
                     b.ToTable("Person", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            PersonID = 1,
+                            BirthDate = new DateOnly(1997, 10, 25),
+                            FirstName = "Genji",
+                            LastName = "Shimada"
+                        },
+                        new
+                        {
+                            PersonID = 2,
+                            BirthDate = new DateOnly(1990, 3, 14),
+                            FirstName = "Hanzo",
+                            LastName = "Shimada"
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.PERSON.PersonInfo", b =>
@@ -173,8 +218,6 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.Property<int>("PersonInfoID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonInfoID"));
 
                     b.Property<int?>("AddressID")
                         .HasColumnType("int");
@@ -190,15 +233,27 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     b.HasKey("PersonInfoID");
 
-                    b.HasIndex("AddressID");
-
-                    b.HasIndex("EmailID");
-
                     b.HasIndex("PersonID");
 
-                    b.HasIndex("PhoneNumberID");
-
                     b.ToTable("PersonInfo", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            PersonInfoID = 1,
+                            AddressID = 1,
+                            EmailID = 1,
+                            PersonID = 1,
+                            PhoneNumberID = 1
+                        },
+                        new
+                        {
+                            PersonInfoID = 2,
+                            AddressID = 1,
+                            EmailID = 1,
+                            PersonID = 2,
+                            PhoneNumberID = 1
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.Recipients.Customer", b =>
@@ -209,14 +264,21 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
 
-                    b.Property<int?>("PersonId")
+                    b.Property<int>("PersonID")
                         .HasColumnType("int");
 
                     b.HasKey("CustomerID");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("PersonID");
 
                     b.ToTable("Customer", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerID = 1,
+                            PersonID = 1
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.Recipients.CustomerSupportRepresentative", b =>
@@ -227,19 +289,27 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerSupportRepresentativeID"));
 
-                    b.Property<int?>("CompanyId")
+                    b.Property<int?>("CompanyID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PersonId")
+                    b.Property<int?>("PersonID")
                         .HasColumnType("int");
 
                     b.HasKey("CustomerSupportRepresentativeID");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyID");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("PersonID");
 
                     b.ToTable("Csr", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerSupportRepresentativeID = 1,
+                            CompanyID = 1,
+                            PersonID = 2
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.General.Address", b =>
@@ -260,14 +330,42 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("AddressType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("AddressID");
 
                     b.ToTable("Address", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            AddressID = 1,
+                            AddressLineOne = "9929 Sulphur Springs Ave. Muskego",
+                            AddressLineTwo = "",
+                            AddressType = "DOMICILE",
+                            City = "Milwaukee",
+                            State = "WI"
+                        },
+                        new
+                        {
+                            AddressID = 2,
+                            AddressLineOne = "17 Fairview Road Cheaspeake",
+                            AddressLineTwo = "",
+                            AddressType = "BUSINESS",
+                            City = "Toledo",
+                            State = "CA"
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.General.Email", b =>
@@ -278,6 +376,10 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmailID"));
 
+                    b.Property<string>("EmailAccountType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmailCharacters")
                         .IsRequired()
                         .HasMaxLength(320)
@@ -286,6 +388,20 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     b.HasKey("EmailID");
 
                     b.ToTable("Email", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            EmailID = 1,
+                            EmailAccountType = "HOME",
+                            EmailCharacters = "shimadabro@gmail.com"
+                        },
+                        new
+                        {
+                            EmailID = 2,
+                            EmailAccountType = "HOME",
+                            EmailCharacters = "shimadaclan@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.General.PhoneNumber", b =>
@@ -301,9 +417,27 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
+                    b.Property<string>("PhoneNumberType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("PhoneNumberID");
 
                     b.ToTable("PhoneNumber", "CustomerDatabase");
+
+                    b.HasData(
+                        new
+                        {
+                            PhoneNumberID = 1,
+                            PhoneNumberDigits = "1925064920",
+                            PhoneNumberType = "WORK"
+                        },
+                        new
+                        {
+                            PhoneNumberID = 2,
+                            PhoneNumberDigits = "7392018402",
+                            PhoneNumberType = "WORK"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -506,13 +640,15 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.CALL.Call", b =>
                 {
+                    b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.Recipients.Customer", "Customer")
+                        .WithMany("Calls")
+                        .HasForeignKey("CallID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.CALL.CallNotes", "CallNotes")
                         .WithMany("Calls")
                         .HasForeignKey("CallNotesID");
-
-                    b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.Recipients.Customer", "Customer")
-                        .WithMany("Calls")
-                        .HasForeignKey("CustomerId");
 
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.Recipients.CustomerSupportRepresentative", "CustomerSupportRepresentative")
                         .WithMany("Calls")
@@ -527,21 +663,27 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.COMPANY.CompanyInfo", b =>
                 {
-                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Address", "Address")
-                        .WithMany("CompanyInfos")
-                        .HasForeignKey("AddressID");
-
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.COMPANY.Company", "Company")
                         .WithMany("CompanyInfos")
                         .HasForeignKey("CompanyID");
 
+                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Address", "Address")
+                        .WithMany("CompanyInfos")
+                        .HasForeignKey("CompanyInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CustomerDatabaseAPI.Server.Models.General.Email", "Email")
                         .WithMany("CompanyInfos")
-                        .HasForeignKey("EmailID");
+                        .HasForeignKey("CompanyInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CustomerDatabaseAPI.Server.Models.General.PhoneNumber", "PhoneNumber")
                         .WithMany("CompanyInfos")
-                        .HasForeignKey("PhoneNumberID");
+                        .HasForeignKey("CompanyInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Address");
 
@@ -554,21 +696,27 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.PERSON.PersonInfo", b =>
                 {
-                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Address", "Address")
-                        .WithMany("PersonInfos")
-                        .HasForeignKey("AddressID");
-
-                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Email", "Email")
-                        .WithMany("PersonInfos")
-                        .HasForeignKey("EmailID");
-
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", "Person")
                         .WithMany("PersonInfos")
                         .HasForeignKey("PersonID");
 
+                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Address", "Address")
+                        .WithMany("PersonInfos")
+                        .HasForeignKey("PersonInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CustomerDatabaseAPI.Server.Models.General.Email", "Email")
+                        .WithMany("PersonInfos")
+                        .HasForeignKey("PersonInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CustomerDatabaseAPI.Server.Models.General.PhoneNumber", "PhoneNumber")
                         .WithMany("PersonInfos")
-                        .HasForeignKey("PhoneNumberID");
+                        .HasForeignKey("PersonInfoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Address");
 
@@ -583,7 +731,9 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("PersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
                 });
@@ -592,11 +742,11 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.COMPANY.Company", "Company")
                         .WithMany("CustomerSupportRepresentatives")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyID");
 
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId");
+                        .HasForeignKey("PersonID");
 
                     b.Navigation("Company");
 

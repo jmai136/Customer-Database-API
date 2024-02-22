@@ -10,15 +10,19 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CompanyInfoID { get; set; }
 
+        public int? CompanyID;
         [ForeignKey("CompanyID")]
         public Company? Company { get; set; }
 
+        public int? AddressID;
         [ForeignKey("AddressID")]
         public Address? Address { get; set; }
-    
+
+        public int? PhoneNumberID;
         [ForeignKey("PhoneNumberID")]
         public PhoneNumber? PhoneNumber { get; set; }
 
+        public int? EmailID;
         [ForeignKey("EmailID")]
         public Email? Email { get; set; }
     }

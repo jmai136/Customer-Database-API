@@ -8,17 +8,40 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
 {
     public enum ECompanyIndustry
     {
+        [Display(Name = "Manufacturing")]
         MANUFACTURING,
+
+        [Display(Name = "Technology")]
         TECHNOLOGY,
+
+        [Display(Name = "Financial")]
         FINANCIAL,
+
+        [Display(Name = "Retail")]
         RETAIL,
+
+        [Display(Name = "Healthcare")]
         HEALTHCARE,
+
+        [Display(Name = "Telecommunications")]
         TELECOMMUNICATIONS,
+
+        [Display(Name = "Energy")]
         ENERGY,
+
+        [Display(Name = "Construction")]
         CONSTRUCTION,
+
+        [Display(Name = "Transportation")]
         TRANSPORTATION,
+
+        [Display(Name = "Hospitality")]
         HOSPITALITY,
+
+        [Display(Name = "Food")]
         FOOD,
+
+        [Display(Name = "Entertainment")]
         ENTERTAINMENT
     }
 
@@ -31,7 +54,8 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         [Required]
         public string CompanyName { get; set; }
 
-        public string CompanyDescription { get; set; }
+        [Required]
+        public string? CompanyDescription { get; set; }
 
         [Required]
         [EnumDataType(typeof(ECompanyIndustry))]
@@ -41,9 +65,9 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.COMPANY
         // 1 - MANY
 
         [Required]
-        public List<CustomerSupportRepresentative> CustomerSupportRepresentatives { get; set; }
+        public List<CustomerSupportRepresentative>? CustomerSupportRepresentatives { get; set; }
 
         [Required]
-        public List<CompanyInfo> CompanyInfos { get; set; }
+        public List<CompanyInfo>? CompanyInfos { get; set; }
     }
 }

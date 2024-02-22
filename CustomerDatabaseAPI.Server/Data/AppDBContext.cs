@@ -52,201 +52,238 @@ namespace CustomerDatabaseAPI.Server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             /**************** PERSON *******************/
-
             // I shouldn't have to configure the entity or key due to already doing that in my model
             modelBuilder.Entity<Person>()
-                .HasMany(person => person.PersonInfos);
+                .HasMany(person => person.PersonInfos)
+                .WithOne(personInfo => personInfo.Person);
 
-            /*
+            /**************** ADDRESS *******************/
+            modelBuilder.Entity<Address>()
+                .HasMany(address => address.PersonInfos)
+                .WithOne(personInfo => personInfo.Address)
+                .HasForeignKey(address => address.PersonInfoID);
+            modelBuilder.Entity<Address>()
+                .HasMany(address => address.CompanyInfos)
+                .WithOne(companyInfo => companyInfo.Address)
+                .HasForeignKey(address => address.CompanyInfoID);
+
+            modelBuilder.Entity<Address>()
+                .Property(address => address.AddressType)
+                .HasConversion<string>();
+            modelBuilder.Entity<Address>()
+                .Property(address => address.State)
+                .HasConversion<string>();
+
+            /**************** PHONE NUMBER *******************/
+            modelBuilder.Entity<PhoneNumber>()
+                .HasMany(phoneNumber=> phoneNumber.PersonInfos)
+                .WithOne(personInfo => personInfo.PhoneNumber)
+                .HasForeignKey(phoneNumber => phoneNumber.PersonInfoID);
+            modelBuilder.Entity<PhoneNumber>()
+                .HasMany(phoneNumber => phoneNumber.CompanyInfos)
+                .WithOne(companyInfo => companyInfo.PhoneNumber)
+                .HasForeignKey(phoneNumber => phoneNumber.CompanyInfoID);
+
+            modelBuilder.Entity<PhoneNumber>()
+                .Property(phoneNumber => phoneNumber.PhoneNumberType)
+                .HasConversion<string>();
+
+            /**************** EMAIL *******************/
+            modelBuilder.Entity<Email>()
+                .HasMany(email => email.PersonInfos)
+                .WithOne(personInfo => personInfo.Email)
+                .HasForeignKey(personInfo => personInfo.PersonInfoID);
+            modelBuilder.Entity<Email>()
+                .HasMany(email => email.CompanyInfos)
+                .WithOne(companyInfo => companyInfo.Email)
+                .HasForeignKey(companyInfo => companyInfo.CompanyInfoID);
+
+            modelBuilder.Entity<Email>()
+                .Property(email => email.EmailAccountType)
+                .HasConversion<string>();
+
+            /**************** CUSTOMER *******************/
+            modelBuilder.Entity<Customer>()
+                .HasMany(customer => customer.Calls)
+                .WithOne(call => call.Customer)
+                .HasForeignKey(call => call.CallID);
+
+
+            /**************** CSR *******************/
+            modelBuilder.Entity<CustomerSupportRepresentative>()
+                .HasMany(csr => csr.Calls)
+                .WithOne(call => call.CustomerSupportRepresentative);
+
+            /**************** COMPANY *******************/
+            modelBuilder.Entity<Company>()
+                .Property(company => company.CompanyIndustry)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Company>()
+                .HasMany(company => company.CustomerSupportRepresentatives)
+                .WithOne(csr => csr.Company);
+
+            /**************** CALLS *******************/
+            modelBuilder.Entity<CallNotes>()
+               .HasMany(callNote => callNote.Calls)
+               .WithOne(call => call.CallNotes);
+
+            modelBuilder.Entity<CallNotes>()
+                .Property(callNote => callNote.CallReasonType)
+                .HasConversion<string>();
+
             // Adds seed data, temporary, might just make a DBSeed class in the future
             modelBuilder.Entity<Person>().
                 HasData(
                     new Person {
-                        PersonID = 0,
+                        PersonID = 1,
                         FirstName = "Genji",
                         LastName = "Shimada",
                         BirthDate = new DateOnly(1997, 10, 25)
                     },
                     new Person
                     {
-                        PersonID = 1,
+                        PersonID = 2,
                         FirstName = "Hanzo",
                         LastName = "Shimada",
                         BirthDate = new DateOnly(1990, 3, 14)
                     });
 
-            modelBuilder.Entity<PersonInfo>().
-                HasData(
-                    new PersonInfo
-                    {
-                        PersonInfoID = 0,
-                        PersonID = 0,
-                        AddressID = 0,
-                        PhoneNumberID = 0,
-                        EmailID = 0
-                    },
-                    new PersonInfo
-                    {
-                        PersonInfoID = 1,
-                        PersonID = 1,
-                        AddressID = 0,
-                        PhoneNumberID = 0,
-                        EmailID = 0
-                    });
-            */
-
-            /**************** ADDRESS *******************/
-            modelBuilder.Entity<Address>()
-                .HasMany(address => address.PersonInfos);
-            modelBuilder.Entity<Address>()
-                .HasMany(address => address.CompanyInfos);
-
-            /*
             modelBuilder.Entity<Address>().HasData(
                 new Address
                 {
-                    AddressID = 0,
+                    AddressID = 1,
                     AddressLineOne = "9929 Sulphur Springs Ave. Muskego",
                     AddressLineTwo = "",
+                    AddressType = EAddressType.DOMICILE,
                     City = "Milwaukee",
                     State = EStatesAbbreviations.WI,
                     Zipcode = "56032"
                 },
                 new Address
                 {
-                    AddressID = 1,
+                    AddressID = 2,
                     AddressLineOne = "17 Fairview Road Cheaspeake",
                     AddressLineTwo = "",
+                    AddressType = EAddressType.BUSINESS,
                     City = "Toledo",
                     State = EStatesAbbreviations.CA,
                     Zipcode = "784023"
                 }
             );
-            */
 
-            /**************** PHONE NUMBER *******************/
-            modelBuilder.Entity<PhoneNumber>()
-                .HasMany(phoneNumber=> phoneNumber.PersonInfos);
-            modelBuilder.Entity<PhoneNumber>()
-                .HasMany(phoneNumber => phoneNumber.CompanyInfos);
-
-            /*
-            modelBuilder.Entity<PhoneNumber>().HasData(
-                new PhoneNumber
-                {
-                    PhoneNumberID = 0,
-                    PhoneNumberDigits = "1925064920",
-                    PhoneNumberType = EPhoneNumberType.WORK
-                },
-                new PhoneNumber
-                {
-                    PhoneNumberID = 1,
-                    PhoneNumberDigits = "7392018402",
-                    PhoneNumberType = EPhoneNumberType.WORK
-                }
-            );
-            */
-
-            /**************** EMAIL *******************/
-            modelBuilder.Entity<Email>()
-                .HasMany(email => email.PersonInfos);
-            modelBuilder.Entity<Email>()
-                .HasMany(email => email.CompanyInfos);
-
-            /*
             modelBuilder.Entity<Email>().HasData(
                 new Email
                 {
-                    EmailID = 0,
+                    EmailID = 1,
                     EmailCharacters = "shimadabro@gmail.com",
                     EmailAccountType = EEmailAccountType.HOME
                 },
                 new Email
                 {
-                    EmailID = 1,
+                    EmailID = 2,
                     EmailCharacters = "shimadaclan@gmail.com",
                     EmailAccountType = EEmailAccountType.HOME
                 }
             );
-            */
-            /**************** CUSTOMER *******************/
 
-            modelBuilder.Entity<Customer>()
-                .HasMany(customer => customer.Calls);
-            /*
-            modelBuilder.Entity<Customer>().HasData(
-                new Customer
+            modelBuilder.Entity<PhoneNumber>().HasData(
+                new PhoneNumber
                 {
-                    CustomerID = 0,
-                    PersonID = 0
+                    PhoneNumberID = 1,
+                    PhoneNumberDigits = "1925064920",
+                    PhoneNumberType = EPhoneNumberType.WORK
+                },
+                new PhoneNumber
+                {
+                    PhoneNumberID = 2,
+                    PhoneNumberDigits = "7392018402",
+                    PhoneNumberType = EPhoneNumberType.WORK
                 }
-            );*/
+            );
 
-            /**************** CSR *******************/
-
-            modelBuilder.Entity<CustomerSupportRepresentative>()
-                .HasMany(csr => csr.Calls);
-            /*
-            modelBuilder.Entity<CustomerSupportRepresentative>().HasData(
-                new CustomerSupportRepresentative
-                { 
-                    CustomerSupportRepresentativeID = 0,
-                    PersonID = 1,
-                    CompanyID = 0
-                }
-            );*/
-
-            /**************** COMPANY *******************/
-
-            modelBuilder.Entity<Company>()
-                .Property(company => company.CompanyIndustry)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Company>()
-                .HasMany(company => company.CustomerSupportRepresentatives);
-            /*
             modelBuilder.Entity<Company>().HasData(
                 new Company
                 {
-                    CompanyID = 0,
+                    CompanyID = 1,
                     CompanyName = "The Shimada Clan",
+                    CompanyDescription = "",
                     CompanyIndustry = ECompanyIndustry.HOSPITALITY
-                }
-            );
-
-            modelBuilder.Entity<CompanyInfo>().HasData(
-                new CompanyInfo
-                {
-                    CompanyInfoID = 0,
-                    CompanyID = 0,
-                    AddressID = 1,
-                    PhoneNumberID = 1,
-                    EmailID = 1
-                }
-            );
-
-            /**************** CALLS *******************/
-            /*modelBuilder.Entity<Call>().HasData(
-                new Call
-                {
-                    CallID = 0,
-                    CallNotesID = 0,
-                    CallDurationStartDateTime = new DateTime(2020, 12, 5, 17, 25, 09),
-                    CallDurationEndDateTime = new DateTime(2020, 12, 5, 19, 30, 17),
-                    CustomerID = 0,
-                    CustomerSupportRepresentativeID = 0
                 }
             );
 
             modelBuilder.Entity<CallNotes>().HasData(
                 new CallNotes
                 {
-                    CallNotesID = 0,
+                    CallNotesID = 1,
                     CallNotesDescription = "",
                     CallReasonType = ECallReasonType.BILLING_AND_PAYMENT,
                     IsResolved = 1
                 }
-            );*/
+            );
+
+            /*
+             * Unable to create a 'DbContext' of type ''. The exception 'The seed entity for entity type 'Customer' cannot be added because it has the navigation 'Person' set. To seed relationships,  add the entity seed to 'Customer' and specify the foreign key values {'PersonId'}. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the involved property values.' was thrown while attempting to create an instance. For the different patterns supported at design time, see https://go.microsoft.com/fwlink/?linkid=851728
+             */
+
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer
+                {
+                    CustomerID = 1,
+                    PersonID = 1
+                }
+            );
+
+            modelBuilder.Entity<CustomerSupportRepresentative>().HasData(
+                new CustomerSupportRepresentative
+                { 
+                    CustomerSupportRepresentativeID = 1,
+                    PersonID = 2,
+                    CompanyID = 1
+                }
+            );
+
+            modelBuilder.Entity<PersonInfo>().
+                HasData(
+                    new PersonInfo
+                    {
+                        PersonInfoID = 1,
+                        PersonID = 1,
+                        AddressID = 1,
+                        PhoneNumberID = 1,
+                        EmailID = 1
+                    },
+                    new PersonInfo
+                    {
+                        PersonInfoID = 2,
+                        PersonID = 2,
+                        AddressID = 1,
+                        PhoneNumberID = 1,
+                        EmailID = 1
+                    });
+
+            modelBuilder.Entity<CompanyInfo>().HasData(
+                new CompanyInfo
+                {
+                    CompanyInfoID = 1,
+                    CompanyID = 1,
+                    AddressID = 2,
+                    PhoneNumberID = 2,
+                    EmailID = 2
+                }
+            );
+
+            modelBuilder.Entity<Call>().HasData(
+                new Call
+                {
+                    CallID = 1,
+                    CallNotesID = 1,
+                    CallDurationStartDateTime = new DateTime(2020, 12, 5, 17, 25, 09),
+                    CallDurationEndDateTime = new DateTime(2020, 12, 5, 19, 30, 17),
+                    CustomerID = 1,
+                    CustomerSupportRepresentativeID = 1
+                }
+            );
 
             base.OnModelCreating(modelBuilder);
         }

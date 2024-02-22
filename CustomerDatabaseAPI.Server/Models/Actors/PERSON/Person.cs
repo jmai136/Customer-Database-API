@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CustomerDatabaseAPI.Server.Models.Actors.Recipients;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
@@ -13,7 +14,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
         public string FirstName { get; set; }
 
         [MaxLength(50)]
-        public string MiddleName { get; set; }
+        public string? MiddleName { get; set; }
 
         [Required, MaxLength(50)]
         public string LastName { get; set; }
@@ -22,9 +23,10 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
         public DateOnly BirthDate { get; set; }
 
 
-        // 1 - MANY
 
+ 
+        // 1 - MANY
         [Required]
-        public List<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo>? PersonInfos { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CallID { get; set; }
 
+        public int? CallNotesID;
         // 1 - many
         [ForeignKey("CallNotesID")]
         public CallNotes? CallNotes { get; set; }
@@ -18,7 +19,8 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
         public DateTime CallDurationStartDateTime { get; set; }
 
         [Required]
-        public DateTime CallDurationEndDateTime
+        public DateTime CallDurationEndDateTime { get; set; }
+            /*
         {
             get
             {
@@ -28,11 +30,13 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
             {
                 CallDurationEndDateTime = (value < CallDurationStartDateTime) ? CallDurationStartDateTime : value;
             }
-        }
+        }*/
 
-        [ForeignKey("CustomerId")]
+        public int? CustomerID { get; set; }
+        [ForeignKey("CustomerID")]
         public Customer? Customer { get; set; }
 
+        public int? CustomerSupportRepresentativeID { get; set; }
         [ForeignKey("CustomerSupportRepresentativeID")]
         public CustomerSupportRepresentative? CustomerSupportRepresentative { get; set; }
     }

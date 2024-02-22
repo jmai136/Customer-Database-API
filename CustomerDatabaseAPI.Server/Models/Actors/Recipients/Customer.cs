@@ -11,13 +11,18 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerID { get; set; }
 
-        [ForeignKey("PersonId")]
+
+        // Foreign key property
+        public int PersonID { get; set; }
+
+        // Navigation property
+        [ForeignKey("PersonID")]
         public Person? Person { get; set; }
 
 
         // 1 - MANY
 
         [Required]
-        public List<Call> Calls { get; set; }
+        public List<Call>? Calls { get; set; }
     }
 }

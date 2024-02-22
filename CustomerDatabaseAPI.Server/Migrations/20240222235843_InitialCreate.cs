@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CustomerDatabaseAPI.Server.Migrations
 {
     /// <inheritdoc />
@@ -23,7 +25,9 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AddressLineOne = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AddressLineTwo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    AddressType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,8 +80,9 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     CallNotesID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CallNotesDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsResolved = table.Column<byte>(type: "tinyint", nullable: false)
+                    CallNotesDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsResolved = table.Column<byte>(type: "tinyint", nullable: false),
+                    CallReasonType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +112,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     EmailID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmailCharacters = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false)
+                    EmailCharacters = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false),
+                    EmailAccountType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,7 +128,7 @@ namespace CustomerDatabaseAPI.Server.Migrations
                     PersonID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     BirthDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
@@ -138,7 +144,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     PhoneNumberID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PhoneNumberDigits = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false)
+                    PhoneNumberDigits = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    PhoneNumberType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -258,21 +265,21 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     CustomerSupportRepresentativeID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
-                    CompanyId = table.Column<int>(type: "int", nullable: true)
+                    PersonID = table.Column<int>(type: "int", nullable: true),
+                    CompanyID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Csr", x => x.CustomerSupportRepresentativeID);
                     table.ForeignKey(
-                        name: "FK_Csr_Company_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Csr_Company_CompanyID",
+                        column: x => x.CompanyID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Company",
                         principalColumn: "CompanyID");
                     table.ForeignKey(
-                        name: "FK_Csr_Person_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_Csr_Person_PersonID",
+                        column: x => x.PersonID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Person",
                         principalColumn: "PersonID");
@@ -285,17 +292,18 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     CustomerID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: true)
+                    PersonID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customer", x => x.CustomerID);
                     table.ForeignKey(
-                        name: "FK_Customer_Person_PersonId",
-                        column: x => x.PersonId,
+                        name: "FK_Customer_Person_PersonID",
+                        column: x => x.PersonID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Person",
-                        principalColumn: "PersonID");
+                        principalColumn: "PersonID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,22 +311,22 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 schema: "CustomerDatabase",
                 columns: table => new
                 {
-                    CompanyInfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyInfoID = table.Column<int>(type: "int", nullable: false),
                     CompanyID = table.Column<int>(type: "int", nullable: true),
                     AddressID = table.Column<int>(type: "int", nullable: true),
-                    PhoneNumberID = table.Column<int>(type: "int", nullable: true),
-                    EmailID = table.Column<int>(type: "int", nullable: true)
+                    EmailID = table.Column<int>(type: "int", nullable: true),
+                    PhoneNumberID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyInfo", x => x.CompanyInfoID);
                     table.ForeignKey(
-                        name: "FK_CompanyInfo_Address_AddressID",
-                        column: x => x.AddressID,
+                        name: "FK_CompanyInfo_Address_CompanyInfoID",
+                        column: x => x.CompanyInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Address",
-                        principalColumn: "AddressID");
+                        principalColumn: "AddressID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CompanyInfo_Company_CompanyID",
                         column: x => x.CompanyID,
@@ -326,17 +334,19 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         principalTable: "Company",
                         principalColumn: "CompanyID");
                     table.ForeignKey(
-                        name: "FK_CompanyInfo_Email_EmailID",
-                        column: x => x.EmailID,
+                        name: "FK_CompanyInfo_Email_CompanyInfoID",
+                        column: x => x.CompanyInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Email",
-                        principalColumn: "EmailID");
+                        principalColumn: "EmailID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CompanyInfo_PhoneNumber_PhoneNumberID",
-                        column: x => x.PhoneNumberID,
+                        name: "FK_CompanyInfo_PhoneNumber_CompanyInfoID",
+                        column: x => x.CompanyInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "PhoneNumber",
-                        principalColumn: "PhoneNumberID");
+                        principalColumn: "PhoneNumberID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -344,8 +354,7 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 schema: "CustomerDatabase",
                 columns: table => new
                 {
-                    PersonInfoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonInfoID = table.Column<int>(type: "int", nullable: false),
                     PersonID = table.Column<int>(type: "int", nullable: true),
                     AddressID = table.Column<int>(type: "int", nullable: true),
                     PhoneNumberID = table.Column<int>(type: "int", nullable: true),
@@ -355,17 +364,19 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 {
                     table.PrimaryKey("PK_PersonInfo", x => x.PersonInfoID);
                     table.ForeignKey(
-                        name: "FK_PersonInfo_Address_AddressID",
-                        column: x => x.AddressID,
+                        name: "FK_PersonInfo_Address_PersonInfoID",
+                        column: x => x.PersonInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Address",
-                        principalColumn: "AddressID");
+                        principalColumn: "AddressID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonInfo_Email_EmailID",
-                        column: x => x.EmailID,
+                        name: "FK_PersonInfo_Email_PersonInfoID",
+                        column: x => x.PersonInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Email",
-                        principalColumn: "EmailID");
+                        principalColumn: "EmailID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PersonInfo_Person_PersonID",
                         column: x => x.PersonID,
@@ -373,11 +384,12 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         principalTable: "Person",
                         principalColumn: "PersonID");
                     table.ForeignKey(
-                        name: "FK_PersonInfo_PhoneNumber_PhoneNumberID",
-                        column: x => x.PhoneNumberID,
+                        name: "FK_PersonInfo_PhoneNumber_PersonInfoID",
+                        column: x => x.PersonInfoID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "PhoneNumber",
-                        principalColumn: "PhoneNumberID");
+                        principalColumn: "PhoneNumberID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -385,12 +397,11 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 schema: "CustomerDatabase",
                 columns: table => new
                 {
-                    CallID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CallID = table.Column<int>(type: "int", nullable: false),
                     CallNotesID = table.Column<int>(type: "int", nullable: true),
                     CallDurationStartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CallDurationEndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    CustomerID = table.Column<int>(type: "int", nullable: true),
                     CustomerSupportRepresentativeID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -409,12 +420,99 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         principalTable: "Csr",
                         principalColumn: "CustomerSupportRepresentativeID");
                     table.ForeignKey(
-                        name: "FK_Call_Customer_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Call_Customer_CallID",
+                        column: x => x.CallID,
                         principalSchema: "CustomerDatabase",
                         principalTable: "Customer",
-                        principalColumn: "CustomerID");
+                        principalColumn: "CustomerID",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Address",
+                columns: new[] { "AddressID", "AddressLineOne", "AddressLineTwo", "AddressType", "City", "State" },
+                values: new object[,]
+                {
+                    { 1, "9929 Sulphur Springs Ave. Muskego", "", "DOMICILE", "Milwaukee", "WI" },
+                    { 2, "17 Fairview Road Cheaspeake", "", "BUSINESS", "Toledo", "CA" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "CallNotes",
+                columns: new[] { "CallNotesID", "CallNotesDescription", "CallReasonType", "IsResolved" },
+                values: new object[] { 1, "", "BILLING_AND_PAYMENT", (byte)1 });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Company",
+                columns: new[] { "CompanyID", "CompanyDescription", "CompanyIndustry", "CompanyName" },
+                values: new object[] { 1, "", "HOSPITALITY", "The Shimada Clan" });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Email",
+                columns: new[] { "EmailID", "EmailAccountType", "EmailCharacters" },
+                values: new object[,]
+                {
+                    { 1, "HOME", "shimadabro@gmail.com" },
+                    { 2, "HOME", "shimadaclan@gmail.com" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Person",
+                columns: new[] { "PersonID", "BirthDate", "FirstName", "LastName", "MiddleName" },
+                values: new object[,]
+                {
+                    { 1, new DateOnly(1997, 10, 25), "Genji", "Shimada", null },
+                    { 2, new DateOnly(1990, 3, 14), "Hanzo", "Shimada", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "PhoneNumber",
+                columns: new[] { "PhoneNumberID", "PhoneNumberDigits", "PhoneNumberType" },
+                values: new object[,]
+                {
+                    { 1, "1925064920", "WORK" },
+                    { 2, "7392018402", "WORK" }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "CompanyInfo",
+                columns: new[] { "CompanyInfoID", "AddressID", "CompanyID", "EmailID", "PhoneNumberID" },
+                values: new object[] { 1, 2, 1, 2, 2 });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Csr",
+                columns: new[] { "CustomerSupportRepresentativeID", "CompanyID", "PersonID" },
+                values: new object[] { 1, 1, 2 });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Customer",
+                columns: new[] { "CustomerID", "PersonID" },
+                values: new object[] { 1, 1 });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "PersonInfo",
+                columns: new[] { "PersonInfoID", "AddressID", "EmailID", "PersonID", "PhoneNumberID" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, 1, 1 },
+                    { 2, 1, 1, 2, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "CustomerDatabase",
+                table: "Call",
+                columns: new[] { "CallID", "CallDurationEndDateTime", "CallDurationStartDateTime", "CallNotesID", "CustomerID", "CustomerSupportRepresentativeID" },
+                values: new object[] { 1, new DateTime(2020, 12, 5, 19, 30, 17, 0, DateTimeKind.Unspecified), new DateTime(2020, 12, 5, 17, 25, 9, 0, DateTimeKind.Unspecified), 1, 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -462,22 +560,10 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 column: "CallNotesID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Call_CustomerId",
-                schema: "CustomerDatabase",
-                table: "Call",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Call_CustomerSupportRepresentativeID",
                 schema: "CustomerDatabase",
                 table: "Call",
                 column: "CustomerSupportRepresentativeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CompanyInfo_AddressID",
-                schema: "CustomerDatabase",
-                table: "CompanyInfo",
-                column: "AddressID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyInfo_CompanyID",
@@ -486,58 +572,28 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 column: "CompanyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyInfo_EmailID",
-                schema: "CustomerDatabase",
-                table: "CompanyInfo",
-                column: "EmailID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CompanyInfo_PhoneNumberID",
-                schema: "CustomerDatabase",
-                table: "CompanyInfo",
-                column: "PhoneNumberID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Csr_CompanyId",
+                name: "IX_Csr_CompanyID",
                 schema: "CustomerDatabase",
                 table: "Csr",
-                column: "CompanyId");
+                column: "CompanyID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Csr_PersonId",
+                name: "IX_Csr_PersonID",
                 schema: "CustomerDatabase",
                 table: "Csr",
-                column: "PersonId");
+                column: "PersonID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Customer_PersonId",
+                name: "IX_Customer_PersonID",
                 schema: "CustomerDatabase",
                 table: "Customer",
-                column: "PersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonInfo_AddressID",
-                schema: "CustomerDatabase",
-                table: "PersonInfo",
-                column: "AddressID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonInfo_EmailID",
-                schema: "CustomerDatabase",
-                table: "PersonInfo",
-                column: "EmailID");
+                column: "PersonID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonInfo_PersonID",
                 schema: "CustomerDatabase",
                 table: "PersonInfo",
                 column: "PersonID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PersonInfo_PhoneNumberID",
-                schema: "CustomerDatabase",
-                table: "PersonInfo",
-                column: "PhoneNumberID");
         }
 
         /// <inheritdoc />

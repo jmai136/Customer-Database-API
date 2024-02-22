@@ -12,16 +12,20 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerSupportRepresentativeID { get; set; }
 
-        [ForeignKey("PersonId")]
+        // Foreign key property
+        public int? PersonID { get; set; }
+        // Navigation property
+        [ForeignKey("PersonID")]
         public Person? Person { get; set; }
 
-        [ForeignKey("CompanyId")]
+        public int? CompanyID { get; set; }
+        [ForeignKey("CompanyID")]
         public Company? Company { get; set; }
 
 
         // 1 - MANY
 
         [Required]
-        public List<Call> Calls { get; set; }
+        public List<Call>? Calls { get; set; }
     }
 }

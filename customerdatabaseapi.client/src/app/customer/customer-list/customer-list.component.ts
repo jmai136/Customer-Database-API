@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 
 import { CustomerListService } from './customer-list.service';
+import { Customer } from '../customer';
 
 @Component({
   selector: 'app-customer-list',
@@ -14,16 +15,16 @@ import { CustomerListService } from './customer-list.service';
 })
 
 export class CustomerListComponent {
-  customers : string[] = [
-    "Lena Oxton",
-    "Jack Morrison",
-    "Genji Shimada",
-    "Hanzo Shimada"
+  customers : Customer[] = [
   ];
 
   constructor(private service: CustomerListService) { }
 
   ngOnInit(): void {
     this.service.getCustomers().subscribe(data => this.customers = data)
+  }
+
+  getCustomers(): void {
+
   }
 }

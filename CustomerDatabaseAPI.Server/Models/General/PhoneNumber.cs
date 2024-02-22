@@ -8,9 +8,14 @@ namespace CustomerDatabaseAPI.Server.Models.General
 {
     public enum EPhoneNumberType
     {
+        [Display(Name = "Home")]
         HOME,
-        WORK,
-        MOBILE
+
+        [Display(Name = "Mobile")]
+        MOBILE,
+
+        [Display(Name = "Work")]
+        WORK
     }
 
     [Table("PhoneNumber", Schema="CustomerDatabase")]
@@ -30,9 +35,9 @@ namespace CustomerDatabaseAPI.Server.Models.General
         // 1 - MANY
 
         [Required]
-        public List<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo>? PersonInfos { get; set; }
 
         [Required]
-        public List<CompanyInfo> CompanyInfos { get; set; }
+        public List<CompanyInfo>? CompanyInfos { get; set; }
     }
 }
