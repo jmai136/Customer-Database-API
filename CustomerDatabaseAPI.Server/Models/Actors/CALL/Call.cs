@@ -4,17 +4,15 @@ using CustomerDatabaseAPI.Server.Models.Actors.Recipients;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
 {
-    [Table("Call")]
+    [Table("Call", Schema = "CustomerDatabase")]
     public class Call
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CallID { get; set; }
 
         // 1 - many
-        [Required]
-        public int CallNotesID { get; set; }
         [ForeignKey("CallNotesID")]
-        public CallNotes CallNotes { get; set; }
+        public CallNotes? CallNotes { get; set; }
 
         [Required]
         public DateTime CallDurationStartDateTime { get; set; }
@@ -32,12 +30,10 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.CALL
             }
         }
 
-        public int CustomerID { get; set; }
-        [Required, ForeignKey("CustomerId")]
-        public Customer Customer { get; set; }
+        [ForeignKey("CustomerId")]
+        public Customer? Customer { get; set; }
 
-        public int CustomerSupportRepresentativeID { get; set; }
-        [Required, ForeignKey("CustomerSupportRepresentativeID")]
-        public CustomerSupportRepresentative CustomerSupportRepresentative { get; set; }
+        [ForeignKey("CustomerSupportRepresentativeID")]
+        public CustomerSupportRepresentative? CustomerSupportRepresentative { get; set; }
     }
 }

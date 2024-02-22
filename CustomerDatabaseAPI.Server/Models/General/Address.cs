@@ -6,76 +6,72 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
-    [Table("Address")]
-    public class Address
+    public enum EAddressType
     {
-        private enum EAddressType
-        {
-            DOMICILE,
-            MAILING,
-            BUSINESS
-        }
+        DOMICILE,
+        MAILING,
+        BUSINESS
+    }
 
-        private enum EStatesAbbreviations
-        {
-            AL,
-            AK,
-            AZ,
-            AR,
-            CA,
-            CO,
-            CT,
-            DE,
-            DC,
-            FL,
-            GA,
-            HI,
-            ID,
-            IL,
-            IN,
-            IA,
-            KS,
-            KY,
-            LA,
-            ME,
-            MD,
-            MA,
-            MI,
-            MN,
-            MS,
-            MO,
-            MT,
-            NE,
-            NV,
-            NH,
-            NJ,
-            NM,
-            NY,
-            NC,
-            ND,
-            OH,
-            OK,
-            OR,
-            PA,
-            RI,
-            SC,
-            SD,
-            TN,
-            TX,
-            UT,
-            VT,
-            VA,
-            WA,
-            WV,
-            WI,
-            WY
-        }
+    public enum EStatesAbbreviations
+    {
+        AL,
+        AK,
+        AZ,
+        AR,
+        CA,
+        CO,
+        CT,
+        DE,
+        DC,
+        FL,
+        GA,
+        HI,
+        ID,
+        IL,
+        IN,
+        IA,
+        KS,
+        KY,
+        LA,
+        ME,
+        MD,
+        MA,
+        MI,
+        MN,
+        MS,
+        MO,
+        MT,
+        NE,
+        NV,
+        NH,
+        NJ,
+        NM,
+        NY,
+        NC,
+        ND,
+        OH,
+        OK,
+        OR,
+        PA,
+        RI,
+        SC,
+        SD,
+        TN,
+        TX,
+        UT,
+        VT,
+        VA,
+        WA,
+        WV,
+        WI,
+        WY
+    }
 
-        private enum EZipcodes
-        {
-        }
-
-        [Key]
+    [Table("Address", Schema = "CustomerDatabase")]
+    public class Address
+    { 
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AddressID { get; set; }
 
         [Required, MaxLength(100)]
@@ -85,16 +81,16 @@ namespace CustomerDatabaseAPI.Server.Models.General
         public string AddressLineTwo { get; set; }
 
         [Required, EnumDataType(typeof(EAddressType))]
-        public object AddressType;
+        public EAddressType AddressType;
 
         [Required, MaxLength(100)]
         public string City { get; set; }
 
         [Required, EnumDataType(typeof(EStatesAbbreviations))]
-        public object State;
+        public EStatesAbbreviations State;
 
-        [Required, EnumDataType(typeof(EZipcodes))]
-        public object Zipcode;
+        [Required, MaxLength(11)]
+        public string Zipcode;
 
 
 
@@ -102,9 +98,9 @@ namespace CustomerDatabaseAPI.Server.Models.General
         // 1 - MANY
 
         [Required]
-        public IList<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo> PersonInfos { get; set; }
 
         [Required]
-        public IList<CompanyInfo> CompanyInfos { get; set; }
+        public List<CompanyInfo> CompanyInfos { get; set; }
     }
 }

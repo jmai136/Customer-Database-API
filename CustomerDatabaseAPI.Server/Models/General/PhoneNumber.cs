@@ -2,36 +2,37 @@
 using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Core.Objects.DataClasses;
 
 namespace CustomerDatabaseAPI.Server.Models.General
 {
-    [Table("PhoneNumber")]
+    public enum EPhoneNumberType
+    {
+        HOME,
+        WORK,
+        MOBILE
+    }
+
+    [Table("PhoneNumber", Schema="CustomerDatabase")]
     public class PhoneNumber
     {
-        private enum EPhoneNumberType
-        {
-            HOME,
-            WORK,
-            MOBILE
-        }
-
-        [Key]
-        public int PhoneNumberId { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PhoneNumberID { get; set; }
 
         [Required, MaxLength(11)]
         public string PhoneNumberDigits { get; set; }
 
         [Required, EnumDataType(typeof(EPhoneNumberType))]
-        public object PhoneNumberType;
+        public EPhoneNumberType PhoneNumberType;
 
 
 
         // 1 - MANY
 
         [Required]
-        public IList<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo> PersonInfos { get; set; }
 
         [Required]
-        public IList<CompanyInfo> CompanyInfos { get; set; }
+        public List<CompanyInfo> CompanyInfos { get; set; }
     }
 }

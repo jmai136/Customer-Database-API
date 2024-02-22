@@ -5,20 +5,19 @@ using CustomerDatabaseAPI.Server.Models.Actors.PERSON;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.Recipients
 {
-    [Table("Customer")]
+    [Table("Customer", Schema = "CustomerDatabase")]
     public class Customer
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerID { get; set; }
 
-        public int PersonID { get; set; }
-        [Required, ForeignKey("PersonId")]
-        public Person Person { get; set; }
+        [ForeignKey("PersonId")]
+        public Person? Person { get; set; }
 
 
         // 1 - MANY
 
         [Required]
-        public IList<Call> Calls { get; set; }
+        public List<Call> Calls { get; set; }
     }
 }

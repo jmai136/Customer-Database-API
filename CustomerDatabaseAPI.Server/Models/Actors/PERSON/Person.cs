@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
 {
-    [Table("Person")]
+    [Table("Person", Schema = "CustomerDatabase")]
     public class Person
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonID { get; set; }
 
         [Required, MaxLength(50)]
@@ -25,6 +25,6 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
         // 1 - MANY
 
         [Required]
-        public IList<PersonInfo> PersonInfos { get; set; }
+        public List<PersonInfo> PersonInfos { get; set; }
     }
 }
