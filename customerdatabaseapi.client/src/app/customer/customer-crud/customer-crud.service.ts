@@ -9,20 +9,20 @@ import { Customer } from '../customer';
 export class CustomerCrudService {
   constructor(private http: HttpClient) { }
 
-  private readonly apiUrl = '/api/customers';
+  private readonly apiUrl = '/api/Customers';
 
   // CREATE - Replace any with Customer[]
-  postCustomer(data : Customer[]): Observable<Customer[]> {
-    return this.http.post<Customer[]>(this.apiUrl, data);
+  postCustomer(data : Customer): Observable<Customer> {
+    return this.http.post<Customer>(this.apiUrl, data);
   }
 
-  // UPDATE - Replace any with Customer[]
-  putCustomer(id: number, data: Customer[]): Observable<Customer[]> {
-    return this.http.put<Customer[]>(this.apiUrl, data);
+  // UPDATE
+  putCustomer(id: number, data: Customer): Observable<Customer> {
+    return this.http.put<Customer>(this.apiUrl, data);
   }
 
-  // DELETE - Replace any with Customer[]
-  deleteCustomer(id: number): Observable<Customer[]> {
-    return this.http.delete<Customer[]>(this.apiUrl.concat("//", id.toString()));
+  // DELETE
+  deleteCustomer(id: number): Observable<any> {
+    return this.http.delete<any>(this.apiUrl.concat("/", id.toString()));
   }
 }

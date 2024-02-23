@@ -1,4 +1,5 @@
 export interface Customer {
-  id: number;
-  name: string;
+  customerID: number;
+  personID: number;
+  // personName - somehow grab that?
 }

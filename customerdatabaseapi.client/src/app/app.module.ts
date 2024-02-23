@@ -8,8 +8,7 @@ import { CustomerListComponent } from './customer/customer-list/customer-list.co
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CustomerListComponent
+    AppComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

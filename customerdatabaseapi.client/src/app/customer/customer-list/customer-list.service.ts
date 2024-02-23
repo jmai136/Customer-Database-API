@@ -9,13 +9,13 @@ import { Customer } from '../customer';
 export class CustomerListService {
   constructor(private http: HttpClient) { }
 
-  private readonly apiUrl = '/api/customers';
+  private readonly apiUrl = '/api/Customers';
 
   getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.apiUrl);
   }
 
   getCustomer(id: number): Observable<Customer> {
-    return this.http.get<Customer>(this.apiUrl.concat("//", id.toString()));
+    return this.http.get<Customer>(this.apiUrl.concat("/", id.toString()));
   }
 }
