@@ -23,7 +23,9 @@ namespace CustomerDatabaseAPI.Server.Models.Actors.PERSON
         public DateOnly BirthDate { get; set; }
 
 
-
+        // Reference navigation to dependent
+        [Required]
+        public Customer? Customer { get; set; }
  
         // 1 - MANY
         [Required]

@@ -435,7 +435,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 values: new object[,]
                 {
                     { 1, "9929 Sulphur Springs Ave. Muskego", "", "DOMICILE", "Milwaukee", "WI" },
-                    { 2, "17 Fairview Road Cheaspeake", "", "BUSINESS", "Toledo", "CA" }
+                    { 2, "17 Fairview Road Cheaspeake", "", "BUSINESS", "Toledo", "CA" },
+                    { 3, "871 Hillside Ave. Palm Harbor", "", "DOMICILE", "New York City", "AL" }
                 });
 
             migrationBuilder.InsertData(
@@ -457,7 +458,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 values: new object[,]
                 {
                     { 1, "HOME", "shimadabro@gmail.com" },
-                    { 2, "HOME", "shimadaclan@gmail.com" }
+                    { 2, "HOME", "shimadaclan@gmail.com" },
+                    { 3, "HOME", "thecavalryishere@yahoo.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -467,7 +469,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 values: new object[,]
                 {
                     { 1, new DateOnly(1997, 10, 25), "Genji", "Shimada", null },
-                    { 2, new DateOnly(1990, 3, 14), "Hanzo", "Shimada", null }
+                    { 2, new DateOnly(1990, 3, 14), "Hanzo", "Shimada", null },
+                    { 3, new DateOnly(2007, 2, 17), "Lena", "Oxton", null }
                 });
 
             migrationBuilder.InsertData(
@@ -477,7 +480,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 values: new object[,]
                 {
                     { 1, "1925064920", "WORK" },
-                    { 2, "7392018402", "WORK" }
+                    { 2, "7392018402", "WORK" },
+                    { 3, "9428018394", "WORK" }
                 });
 
             migrationBuilder.InsertData(
@@ -496,7 +500,11 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 schema: "CustomerDatabase",
                 table: "Customer",
                 columns: new[] { "CustomerID", "PersonID" },
-                values: new object[] { 1, 1 });
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 3 }
+                });
 
             migrationBuilder.InsertData(
                 schema: "CustomerDatabase",
@@ -505,7 +513,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 1, 1, 1 },
-                    { 2, 1, 1, 2, 1 }
+                    { 2, 1, 1, 2, 1 },
+                    { 3, 3, 3, 3, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -587,7 +596,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
                 name: "IX_Customer_PersonID",
                 schema: "CustomerDatabase",
                 table: "Customer",
-                column: "PersonID");
+                column: "PersonID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonInfo_PersonID",

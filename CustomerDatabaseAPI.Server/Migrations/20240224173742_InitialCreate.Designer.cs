@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerDatabaseAPI.Server.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240222235843_InitialCreate")]
+    [Migration("20240224173742_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -210,6 +210,13 @@ namespace CustomerDatabaseAPI.Server.Migrations
                             BirthDate = new DateOnly(1990, 3, 14),
                             FirstName = "Hanzo",
                             LastName = "Shimada"
+                        },
+                        new
+                        {
+                            PersonID = 3,
+                            BirthDate = new DateOnly(2007, 2, 17),
+                            FirstName = "Lena",
+                            LastName = "Oxton"
                         });
                 });
 
@@ -253,6 +260,14 @@ namespace CustomerDatabaseAPI.Server.Migrations
                             EmailID = 1,
                             PersonID = 2,
                             PhoneNumberID = 1
+                        },
+                        new
+                        {
+                            PersonInfoID = 3,
+                            AddressID = 3,
+                            EmailID = 3,
+                            PersonID = 3,
+                            PhoneNumberID = 3
                         });
                 });
 
@@ -269,7 +284,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
                     b.HasKey("CustomerID");
 
-                    b.HasIndex("PersonID");
+                    b.HasIndex("PersonID")
+                        .IsUnique();
 
                     b.ToTable("Customer", "CustomerDatabase");
 
@@ -278,6 +294,11 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         {
                             CustomerID = 1,
                             PersonID = 1
+                        },
+                        new
+                        {
+                            CustomerID = 2,
+                            PersonID = 3
                         });
                 });
 
@@ -365,6 +386,15 @@ namespace CustomerDatabaseAPI.Server.Migrations
                             AddressType = "BUSINESS",
                             City = "Toledo",
                             State = "CA"
+                        },
+                        new
+                        {
+                            AddressID = 3,
+                            AddressLineOne = "871 Hillside Ave. Palm Harbor",
+                            AddressLineTwo = "",
+                            AddressType = "DOMICILE",
+                            City = "New York City",
+                            State = "AL"
                         });
                 });
 
@@ -401,6 +431,12 @@ namespace CustomerDatabaseAPI.Server.Migrations
                             EmailID = 2,
                             EmailAccountType = "HOME",
                             EmailCharacters = "shimadaclan@gmail.com"
+                        },
+                        new
+                        {
+                            EmailID = 3,
+                            EmailAccountType = "HOME",
+                            EmailCharacters = "thecavalryishere@yahoo.com"
                         });
                 });
 
@@ -436,6 +472,12 @@ namespace CustomerDatabaseAPI.Server.Migrations
                         {
                             PhoneNumberID = 2,
                             PhoneNumberDigits = "7392018402",
+                            PhoneNumberType = "WORK"
+                        },
+                        new
+                        {
+                            PhoneNumberID = 3,
+                            PhoneNumberDigits = "9428018394",
                             PhoneNumberType = "WORK"
                         });
                 });
@@ -730,8 +772,8 @@ namespace CustomerDatabaseAPI.Server.Migrations
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.Recipients.Customer", b =>
                 {
                     b.HasOne("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonID")
+                        .WithOne("Customer")
+                        .HasForeignKey("CustomerDatabaseAPI.Server.Models.Actors.Recipients.Customer", "PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -818,6 +860,9 @@ namespace CustomerDatabaseAPI.Server.Migrations
 
             modelBuilder.Entity("CustomerDatabaseAPI.Server.Models.Actors.PERSON.Person", b =>
                 {
+                    b.Navigation("Customer")
+                        .IsRequired();
+
                     b.Navigation("PersonInfos");
                 });
 

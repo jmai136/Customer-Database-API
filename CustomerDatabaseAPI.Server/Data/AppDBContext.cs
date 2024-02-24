@@ -108,6 +108,10 @@ namespace CustomerDatabaseAPI.Server.Data
                 .WithOne(call => call.Customer)
                 .HasForeignKey(call => call.CallID);
 
+            modelBuilder.Entity<Customer>()
+                .HasOne(customer => customer.Person)
+                .WithOne(person => person.Customer)
+                .HasForeignKey<Customer>(customer => customer.PersonID);
 
             /**************** CSR *******************/
             modelBuilder.Entity<CustomerSupportRepresentative>()
@@ -147,6 +151,13 @@ namespace CustomerDatabaseAPI.Server.Data
                         FirstName = "Hanzo",
                         LastName = "Shimada",
                         BirthDate = new DateOnly(1990, 3, 14)
+                    },
+                    new Person
+                    {
+                        PersonID = 3,
+                        FirstName = "Lena",
+                        LastName = "Oxton",
+                        BirthDate = new DateOnly(2007, 2, 17)
                     });
 
             modelBuilder.Entity<Address>().HasData(
@@ -168,7 +179,17 @@ namespace CustomerDatabaseAPI.Server.Data
                     AddressType = EAddressType.BUSINESS,
                     City = "Toledo",
                     State = EStatesAbbreviations.CA,
-                    Zipcode = "784023"
+                    Zipcode = "78402"
+                },
+                new Address
+                {
+                    AddressID = 3,
+                    AddressLineOne = "871 Hillside Ave. Palm Harbor",
+                    AddressLineTwo = "",
+                    AddressType = EAddressType.DOMICILE,
+                    City = "New York City",
+                    State = EStatesAbbreviations.AL,
+                    Zipcode = "34680"
                 }
             );
 
@@ -184,6 +205,12 @@ namespace CustomerDatabaseAPI.Server.Data
                     EmailID = 2,
                     EmailCharacters = "shimadaclan@gmail.com",
                     EmailAccountType = EEmailAccountType.HOME
+                },
+                new Email
+                {
+                    EmailID = 3,
+                    EmailCharacters = "thecavalryishere@yahoo.com",
+                    EmailAccountType = EEmailAccountType.HOME
                 }
             );
 
@@ -198,6 +225,12 @@ namespace CustomerDatabaseAPI.Server.Data
                 {
                     PhoneNumberID = 2,
                     PhoneNumberDigits = "7392018402",
+                    PhoneNumberType = EPhoneNumberType.WORK
+                },
+                new PhoneNumber
+                {
+                    PhoneNumberID = 3,
+                    PhoneNumberDigits = "9428018394",
                     PhoneNumberType = EPhoneNumberType.WORK
                 }
             );
@@ -227,6 +260,11 @@ namespace CustomerDatabaseAPI.Server.Data
                 {
                     CustomerID = 1,
                     PersonID = 1
+                },
+                new Customer
+                {
+                    CustomerID = 2,
+                    PersonID = 3
                 }
             );
 
@@ -256,6 +294,14 @@ namespace CustomerDatabaseAPI.Server.Data
                         AddressID = 1,
                         PhoneNumberID = 1,
                         EmailID = 1
+                    },
+                    new PersonInfo
+                    {
+                        PersonInfoID = 3,
+                        PersonID = 3,
+                        AddressID = 3,
+                        PhoneNumberID = 3,
+                        EmailID = 3
                     });
 
             modelBuilder.Entity<CompanyInfo>().HasData(
