@@ -222,10 +222,6 @@ namespace CustomerDatabaseAPI.Server.Data
                 }
             );
 
-            /*
-             * Unable to create a 'DbContext' of type ''. The exception 'The seed entity for entity type 'Customer' cannot be added because it has the navigation 'Person' set. To seed relationships,  add the entity seed to 'Customer' and specify the foreign key values {'PersonId'}. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the involved property values.' was thrown while attempting to create an instance. For the different patterns supported at design time, see https://go.microsoft.com/fwlink/?linkid=851728
-             */
-
             modelBuilder.Entity<Customer>().HasData(
                 new Customer
                 {

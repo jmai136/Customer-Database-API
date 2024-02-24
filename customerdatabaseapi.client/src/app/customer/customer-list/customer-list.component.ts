@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { CustomerListService } from './customer-list.service';
 import { Customer } from '../customer';
 
+import { PersonListComponent } from '../../person/person-list/person-list.component';
+
 @Component({
   selector: 'app-customer-list',
   standalone: true,
@@ -14,7 +16,9 @@ import { Customer } from '../customer';
     NgFor,
     NgIf,
     UpperCasePipe,
-    FormsModule
+    FormsModule,
+
+    PersonListComponent
   ]
 })
 
@@ -44,6 +48,6 @@ export class CustomerListComponent {
   }
 
   getCustomer(id: number): void {
-    this.service.getCustomer(id) .subscribe((customer : Customer) => this.selectedCustomer = customer);
+    this.service.getCustomer(id).subscribe((customer: Customer) => this.selectedCustomer = customer);
   }
 }

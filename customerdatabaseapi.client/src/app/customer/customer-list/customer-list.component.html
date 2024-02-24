@@ -2,17 +2,17 @@
 <ul class="customer-list">
   <li *ngFor="let customer of customers">
     <button [class.selected]="customer === selectedCustomer" type="button" (click)="onSelectCustomer(customer.customerID)">
-      <span class="customer-id">{{customer.customerID}}</span>
-      <span class="person-id">{{customer.personID}}</span>
+      <app-person-list [personId]="customer.personID" />
+      <span class="customer-id">Customer ID: {{customer.customerID}}</span>
     </button>
-    </li>
+  </li>
 </ul>
 
+<h2>Selected customer</h2>
 <div *ngIf="selectedCustomer">
-  <!--<h2>{{selectedCustomer.name | uppercase}} Details</h2>!-->
-  <div>id: {{selectedCustomer.customerID}}</div>
+  <app-person-list [personId]="selectedCustomer.personID"/>
+  <div>Customer id: {{selectedCustomer.customerID}}</div>
   <div>
-    <label for="customer-id">Customer id: </label>
     <input id="customer-id" [(ngModel)]="selectedCustomer.customerID" placeholder="id">
   </div>
 </div>
